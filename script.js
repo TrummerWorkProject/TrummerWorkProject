@@ -612,15 +612,12 @@ document.addEventListener('DOMContentLoaded', function() {
         
         if (!originalTrack || originalSlides.length === 0) return;
         
-        // Crear la estructura principal
         const mainSlider = document.createElement('div');
         mainSlider.classList.add('main-slider');
         
-        // Mover el track original al main-slider
         container.insertBefore(mainSlider, originalTrack);
         mainSlider.appendChild(originalTrack);
         
-        // Crear el contenedor de miniaturas si no existe
         let thumbsContainer = container.querySelector('.thumbs-container');
         if (!thumbsContainer) {
             thumbsContainer = document.createElement('div');
@@ -628,7 +625,6 @@ document.addEventListener('DOMContentLoaded', function() {
             container.appendChild(thumbsContainer);
         }
         
-        // Crear miniaturas basadas en las diapositivas
         originalSlides.forEach((slide, index) => {
             const img = slide.querySelector('img');
             if (img) {
@@ -645,7 +641,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
         
-        // Mover los botones de navegación al main-slider si están en el contenedor principal
         const prevButton = container.querySelector('.slider-prev');
         const nextButton = container.querySelector('.slider-next');
         
@@ -659,59 +654,67 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
+
 document.addEventListener("DOMContentLoaded", () => {
-  // Inicializar todos los sliders mini
-  const sliders = document.querySelectorAll(".tw-slider-mini")
+  const sliders = document.querySelectorAll(".tw-slider-mini");
 
   sliders.forEach((slider) => {
-    const slides = slider.querySelectorAll("li")
-    const prevBtn = slider.querySelector(".tw-slider-mini-prev")
-    const nextBtn = slider.querySelector(".tw-slider-mini-next")
-    let currentIndex = 0
+    const slides = Array.from(slider.querySelectorAll("li"));
+    if (!slides.length) return;
 
-    // Función para mostrar un slide específico
-    function showSlide(index) {
-      // Ocultar todos los slides
-      slides.forEach((slide) => {
-        slide.classList.remove("active")
-      })
+    const prevBtn = slider.querySelector(".tw-slider-mini-prev");
+    const nextBtn = slider.querySelector(".tw-slider-mini-next");
 
-      // Mostrar el slide actual
-      slides[index].classList.add("active")
+    let currentIndex = slides.findIndex(s => s.classList.contains("active"));
+    if (currentIndex < 0) currentIndex = 0;
+
+    let autoplayId = null;
+    const AUTOPLAY_MS = 6000;
+
+    function applyZ() {
+      slides.forEach((s, i) => {
+        s.style.zIndex = s.classList.contains("active") ? "2" : "1";
+      });
     }
 
-    // Evento para el botón anterior
-    prevBtn.addEventListener("click", () => {
-      currentIndex = (currentIndex - 1 + slides.length) % slides.length
-      showSlide(currentIndex)
-    })
+    function showSlide(index) {
+      index = (index + slides.length) % slides.length;
+      slides.forEach((s, i) => s.classList.toggle("active", i === index));
+      currentIndex = index;
+      applyZ();
+    }
 
-    // Evento para el botón siguiente
-    nextBtn.addEventListener("click", () => {
-      currentIndex = (currentIndex + 1) % slides.length
-      showSlide(currentIndex)
-    })
+    function nextSlide() { showSlide(currentIndex + 1); }
+    function prevSlide() { showSlide(currentIndex - 1); }
 
-    // Iniciar autoplay (opcional)
-    let autoplay = setInterval(() => {
-      currentIndex = (currentIndex + 1) % slides.length
-      showSlide(currentIndex)
-    }, 2000)
+    function startAutoplay() {
+      stopAutoplay();
+      autoplayId = setInterval(nextSlide, AUTOPLAY_MS);
+    }
 
-    // Detener autoplay al pasar el mouse (opcional)
-    slider.addEventListener("mouseenter", () => {
-      clearInterval(autoplay)
-    })
+    function stopAutoplay() {
+      if (autoplayId) {
+        clearInterval(autoplayId);
+        autoplayId = null;
+      }
+    }
 
-    // Reanudar autoplay al quitar el mouse (opcional)
-    slider.addEventListener("mouseleave", () => {
-      autoplay = setInterval(() => {
-        currentIndex = (currentIndex + 1) % slides.length
-        showSlide(currentIndex)
-      }, 5000)
-    })
-  })
-})
+    // eventos de botones (si existen)
+    if (prevBtn) prevBtn.addEventListener("click", () => { prevSlide(); startAutoplay(); });
+    if (nextBtn) nextBtn.addEventListener("click", () => { nextSlide(); startAutoplay(); });
+
+    // pausa en hover / touch
+    slider.addEventListener("mouseenter", stopAutoplay);
+    slider.addEventListener("mouseleave", startAutoplay);
+    slider.addEventListener("touchstart", stopAutoplay, { passive: true });
+    slider.addEventListener("touchend", () => setTimeout(startAutoplay, 250), { passive: true });
+
+    // inicializa
+    showSlide(currentIndex);
+    startAutoplay();
+  });
+});
+
 
 
 /* FIN SLIDERS */
@@ -720,27 +723,17 @@ document.addEventListener('DOMContentLoaded', function() {
     const menuIcon = document.querySelector('.menu-icon');
     const navMenu = document.querySelector('.navbar-nav');
 
-    menuIcon.addEventListener('click', function() {
-        menuIcon.classList.toggle('active');
-        navMenu.classList.toggle('active');
-    });
-
     // Cerrar el menú al hacer clic en un enlace
     document.querySelectorAll('.navbar-nav a').forEach(n => n.addEventListener('click', () => {
         menuIcon.classList.remove('active');
         navMenu.classList.remove('active');
     }));
-});
-
 
 
 document.addEventListener('DOMContentLoaded', function() {
     const menuIcon = document.querySelector('.menu-icon');
     const navMenu = document.querySelector('.navbar-nav');
 
-    menuIcon.addEventListener('click', function() {
-        menuIcon.classList.toggle('active');
-        navMenu.classList.toggle('active');
     });
 
     // Cerrar el menú al hacer clic en un enlace
@@ -755,9 +748,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const navBtn = document.getElementById('navBtn');
     const navLinks = document.getElementById('navLinks');
 
-    navBtn.addEventListener('click', function() {
-        navLinks.classList.toggle('active');
-    });
 });
 
 /*CONTADOR*/
@@ -773,7 +763,6 @@ function updateCountdown() {
       const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
       const seconds = Math.floor((distance % (1000 * 60)) / 1000);
   
-      countdownElement.innerHTML = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
   
       if (distance < 0) {
         clearInterval(interval);
@@ -787,3 +776,6 @@ function updateCountdown() {
   
 
   document.addEventListener('DOMContentLoaded', updateCountdown);
+
+  /* Imprimir COPYRIGHT */
+  console.log("===== Este sitio web fue creado con TrummerWork, visita https://trummerwork-project.web.app/ para más información. Gracias por usar TRUMMERWORK. =====")
