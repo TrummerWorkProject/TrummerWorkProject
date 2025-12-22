@@ -2,12 +2,12 @@
 
 <div align="center">
 
-![TrummerWork Logo](Assets/navlogo.png)
+![TrummerWork Logo](https://trummerwork-project.web.app/Assets/navlogo.png)
 
 **El framework CSS simple, moderno y poderoso para crear sitios web increíbles**
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-1.0.0-green.svg)](https://github.com/TrummerWorkProject/TrummerWorkProject)
+[![Version](https://img.shields.io/badge/version-0.0.6-green.svg)](https://github.com/TrummerWorkProject/TrummerWorkProject)
 [![CSS](https://img.shields.io/badge/CSS-framework-blueviolet.svg)](style.css)
 
 [Demo en Vivo](https://trummerwork-project.web.app) • [Documentación](https://trummerwork-project.web.app/docs.html) • [Tutoriales](https://trummerwork-project.web.app/learn.html)
