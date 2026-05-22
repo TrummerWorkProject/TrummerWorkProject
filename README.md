@@ -49,11 +49,11 @@ Copia estas líneas en tu proyecto para empezar en segundos.
 ```
 
 ### Opción B: Trabajo Local
-Si prefieres tener el control total, puedes descargar los archivos base directamente desde nuestra web:
+Si prefieres tener el control total para editar y modificar, puedes descargar los archivos base directamente desde nuestra web:
 
-![👉 Descargar TrummerWork]()
+[👉 Descargar TrummerWork](https://github.com/TrummerWorkProject/TrummerWorkProject/releases/tag/v1.5.0)
 
-(¿Tienes problemas con la descarga? ¡Contáctame y lo resolvemos!)
+*(¿Tienes problemas con la descarga? ¡Contáctame y lo resolvemos!)*
 
 ---
 
