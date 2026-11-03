@@ -1,0 +1,34 @@
+# Licencia y Términos de Uso
+
+Este proyecto y sus fuentes están protegidos bajo la licencia **Creative Commons Atribución-NoComercial-CompartirIgual 4.0 Internacional (CC BY-NC-SA 4.0)**.
+
+Copyright (c) 2026 Jeremy Díaz
+
+---
+
+## Términos Principales de la Licencia (CC BY-NC-SA 4.0)
+
+Eres libre de:
+
+- **Compartir:** Copiar y redistribuir el material en cualquier medio o formato.
+- **Adaptar:** Remezclar, transformar y construir a partir del material.
+
+Bajo las siguientes condiciones:
+
+- **Atribución (BY):** Debes dar el crédito adecuado, proporcionar un enlace a la licencia e indicar si se realizaron cambios.
+- **No Comercial (NC):** No puedes utilizar el material para una finalidad comercial.
+- **Compartir Igual (SA):** Si remezclas, transformas o creas a partir del material, debes distribuir tus contribuciones bajo la misma licencia que el original.
+
+---
+
+## Reglas de Atribución y Modificación de TrummerWork
+
+Si publicas o distribuyes un proyecto construido con una versión modificada de TrummerWork:
+
+1. **Atribución explícita:** Indica claramente que fue construido con **TrummerWork** y enlaza al repositorio original (`https://github.com/tu-usuario/trummerwork`).
+2. **Fork público obligatorio:** Crea un fork público del proyecto en GitHub y publica allí el código modificado del framework bajo esta misma licencia.
+3. **Uso comercial:** Consulta los términos antes de distribuir o usar el framework con fines comerciales. Si planeas un uso comercial, debes contactar previamente al autor.
+
+---
+
+_Para ver una copia completa del texto legal de esta licencia, visita: https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es_

@@ -1,5 +1,7 @@
 
 document.addEventListener('DOMContentLoaded', function() {
+    const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
     // Inicializar todos los sliders
     initSliders();
     
@@ -16,29 +18,29 @@ document.addEventListener('DOMContentLoaded', function() {
         // Slider con Efecto de Zoom
         initZoomSlider();
         
-        // Slider con Miniaturas
-        initThumbsSlider();
     }
     
     // Slider Básico
     function initBasicSlider() {
-        const sliders = document.querySelectorAll('.slider-basic');
+        const sliders = document.querySelectorAll('.slider-basico');
         
         sliders.forEach(slidercontenedor => {
-            const slider = slidercontenedor.querySelector('.slider-track');
-            const slides = slider.querySelectorAll('.slide');
-            const prevButton = slidercontenedor.querySelector('.slider-prev');
-            const nextButton = slidercontenedor.querySelector('.slider-next');
+            const slider = slidercontenedor.querySelector('.slider-pista');
+            if (!slider) return;
+            const slides = slider.querySelectorAll('.slider-diapositiva');
+            if (!slides.length) return;
+            const prevButton = slidercontenedor.querySelector('.slider-anterior');
+            const nextButton = slidercontenedor.querySelector('.slider-siguiente');
             
             let currentIndex = 0;
             let intervalId;
             const slideInterval = 5000;
             
-            // Configurar el ancho total del slider y de cada slide
+            // Ajusta la pista y el ancho de cada diapositiva.
             slider.style.width = `${slides.length * 100}%`;
             
-            slides.forEach(slide => {
-                slide.style.width = `${100 / slides.length}%`;
+            slides.forEach(slideElement => {
+                slideElement.style.width = `${100 / slides.length}%`;
             });
             
             // Función para mostrar una diapositiva
@@ -60,6 +62,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Reproducción automática
             function startAutoSlide() {
+                if (reduceMotion) return;
                 if (intervalId) clearInterval(intervalId);
                 intervalId = setInterval(nextSlide, slideInterval);
             }
@@ -122,53 +125,60 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Slider con Puntos
     function initDotsSlider() {
-        const sliders = document.querySelectorAll('.slider-dots');
+        const sliders = document.querySelectorAll('.slider-con-indicadores');
         
         sliders.forEach(slidercontenedor => {
-            const slider = slidercontenedor.querySelector('.slider-track');
-            const slides = slider.querySelectorAll('.slide');
-            const prevButton = slidercontenedor.querySelector('.slider-prev');
-            const nextButton = slidercontenedor.querySelector('.slider-next');
-            const dotscontenedor = slidercontenedor.querySelector('.slider-dots-contenedor');
+            const slider = slidercontenedor.querySelector('.slider-pista');
+            if (!slider) return;
+            const slides = slider.querySelectorAll('.slider-diapositiva');
+            if (!slides.length) return;
+            const prevButton = slidercontenedor.querySelector('.slider-anterior');
+            const nextButton = slidercontenedor.querySelector('.slider-siguiente');
+            const dotscontenedor = slidercontenedor.querySelector('.slider-indicadores');
+            if (!dotscontenedor) return;
             
             let currentIndex = 0;
             let intervalId;
             const slideInterval = 10000;
             
-            // Configurar el ancho total del slider y de cada slide
+            // Ajusta la pista y el ancho de cada diapositiva.
             slider.style.width = `${slides.length * 100}%`;
             
-            slides.forEach(slide => {
-                slide.style.width = `${100 / slides.length}%`;
+            slides.forEach(slideElement => {
+                slideElement.style.width = `${100 / slides.length}%`;
             });
             
             // Crear puntos indicadores
             dotscontenedor.innerHTML = ''; // Limpiar contenedor de puntos existentes
             
             slides.forEach((_, index) => {
-                const dot = document.createElement('div');
-                dot.classList.add('dot');
-                if (index === 0) dot.classList.add('active');
-                dot.addEventListener('click', () => {
+                const indicator = document.createElement('button');
+                indicator.classList.add('slider-indicador');
+                indicator.type = 'button';
+                indicator.setAttribute('aria-label', `Mostrar diapositiva ${index + 1}`);
+                if (index === 0) indicator.classList.add('active');
+                indicator.addEventListener('click', () => {
                     showSlide(index);
                     stopAutoSlide();
                     startAutoSlide();
                 });
-                dotscontenedor.appendChild(dot);
+                dotscontenedor.appendChild(indicator);
             });
             
-            const dots = dotscontenedor.querySelectorAll('.dot');
+            const dots = dotscontenedor.querySelectorAll('.slider-indicador');
             
             // Función para mostrar una diapositiva
             function showSlide(index) {
                 slider.style.transform = `translateX(-${index * (100 / slides.length)}%)`;
                 
                 // Actualizar puntos activos
-                dots.forEach((dot, i) => {
+                dots.forEach((indicator, i) => {
                     if (i === index) {
-                        dot.classList.add('active');
+                        indicator.classList.add('active');
+                        indicator.setAttribute('aria-current', 'true');
                     } else {
-                        dot.classList.remove('active');
+                        indicator.classList.remove('active');
+                        indicator.removeAttribute('aria-current');
                     }
                 });
                 
@@ -188,6 +198,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Reproducción automática
             function startAutoSlide() {
+                if (reduceMotion) return;
                 if (intervalId) clearInterval(intervalId);
                 intervalId = setInterval(nextSlide, slideInterval);
             }
@@ -250,34 +261,36 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Slider con Efecto de Fundido
     function initFadeSlider() {
-        const sliders = document.querySelectorAll('.slider-fade');
+        const sliders = document.querySelectorAll('.slider-fundido');
         
         sliders.forEach(slidercontenedor => {
-            const slider = slidercontenedor.querySelector('.slider-track');
-            const slides = slider.querySelectorAll('.slide');
-            const prevButton = slidercontenedor.querySelector('.slider-prev');
-            const nextButton = slidercontenedor.querySelector('.slider-next');
+            const slider = slidercontenedor.querySelector('.slider-pista');
+            if (!slider) return;
+            const slides = slider.querySelectorAll('.slider-diapositiva');
+            if (!slides.length) return;
+            const prevButton = slidercontenedor.querySelector('.slider-anterior');
+            const nextButton = slidercontenedor.querySelector('.slider-siguiente');
             
             let currentIndex = 0;
             let intervalId;
             const slideInterval = 5000;
             
             // Configurar diapositivas iniciales
-            slides.forEach((slide, index) => {
+            slides.forEach((slideElement, index) => {
                 if (index === 0) {
-                    slide.classList.add('active');
+                    slideElement.classList.add('active');
                 } else {
-                    slide.classList.remove('active');
+                    slideElement.classList.remove('active');
                 }
             });
             
             // Función para mostrar una diapositiva con fundido
             function showSlide(index) {
-                slides.forEach((slide, i) => {
+                slides.forEach((slideElement, i) => {
                     if (i === index) {
-                        slide.classList.add('active');
+                        slideElement.classList.add('active');
                     } else {
-                        slide.classList.remove('active');
+                        slideElement.classList.remove('active');
                     }
                 });
                 
@@ -297,6 +310,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Reproducción automática
             function startAutoSlide() {
+                if (reduceMotion) return;
                 if (intervalId) clearInterval(intervalId);
                 intervalId = setInterval(nextSlide, slideInterval);
             }
@@ -337,20 +351,22 @@ document.addEventListener('DOMContentLoaded', function() {
         const sliders = document.querySelectorAll('.slider-zoom');
         
         sliders.forEach(slidercontenedor => {
-            const slider = slidercontenedor.querySelector('.slider-track');
-            const slides = slider.querySelectorAll('.slide');
-            const prevButton = slidercontenedor.querySelector('.slider-prev');
-            const nextButton = slidercontenedor.querySelector('.slider-next');
+            const slider = slidercontenedor.querySelector('.slider-pista');
+            if (!slider) return;
+            const slides = slider.querySelectorAll('.slider-diapositiva');
+            if (!slides.length) return;
+            const prevButton = slidercontenedor.querySelector('.slider-anterior');
+            const nextButton = slidercontenedor.querySelector('.slider-siguiente');
             
-            // Asegurarnos de que cada slide tiene un contenedor para el zoom
-            slides.forEach(slide => {
-                // Verificar si ya existe un zoom-contenedor en el slide
-                if (!slide.querySelector('.zoom-contenedor')) {
-                    const img = slide.querySelector('img');
+            // Prepara cada diapositiva para aplicar el efecto de zoom.
+            slides.forEach(slideElement => {
+                // Evita envolver la imagen más de una vez.
+                if (!slideElement.querySelector('.slider-zoom-imagen')) {
+                    const img = slideElement.querySelector('img');
                     if (img) {
                         // Crear el contenedor de zoom y mover la imagen dentro
                         const zoomcontenedor = document.createElement('div');
-                        zoomcontenedor.classList.add('zoom-contenedor');
+                        zoomcontenedor.classList.add('slider-zoom-imagen');
                         
                         // Clonar la imagen para mantener sus atributos
                         const imgClone = img.cloneNode(true);
@@ -361,8 +377,8 @@ document.addEventListener('DOMContentLoaded', function() {
                         // Agregar la imagen clonada al contenedor de zoom
                         zoomcontenedor.appendChild(imgClone);
                         
-                        // Insertar el contenedor de zoom al principio del slide
-                        slide.insertBefore(zoomcontenedor, slide.firstChild);
+                        // Coloca el contenedor de zoom al inicio de la diapositiva.
+                        slideElement.insertBefore(zoomcontenedor, slideElement.firstChild);
                     }
                 }
             });
@@ -371,11 +387,11 @@ document.addEventListener('DOMContentLoaded', function() {
             let intervalId;
             const slideInterval = 5000;
             
-            // Configurar el ancho total del slider y de cada slide
+            // Ajusta la pista y el ancho de cada diapositiva.
             slider.style.width = `${slides.length * 100}%`;
             
-            slides.forEach(slide => {
-                slide.style.width = `${100 / slides.length}%`;
+            slides.forEach(slideElement => {
+                slideElement.style.width = `${100 / slides.length}%`;
             });
             
             // Marcar la primera diapositiva como activa
@@ -386,11 +402,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 slider.style.transform = `translateX(-${index * (100 / slides.length)}%)`;
                 
                 // Actualizar clases activas para el efecto de zoom
-                slides.forEach((slide, i) => {
+                slides.forEach((slideElement, i) => {
                     if (i === index) {
-                        slide.classList.add('active');
+                        slideElement.classList.add('active');
                     } else {
-                        slide.classList.remove('active');
+                        slideElement.classList.remove('active');
                     }
                 });
                 
@@ -410,6 +426,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Reproducción automática
             function startAutoSlide() {
+                if (reduceMotion) return;
                 if (intervalId) clearInterval(intervalId);
                 intervalId = setInterval(nextSlide, slideInterval);
             }
@@ -474,14 +491,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 document.addEventListener("DOMContentLoaded", () => {
-  const sliders = document.querySelectorAll(".slider-mini");
+  const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const sliders = document.querySelectorAll(".slider-compacto");
 
   sliders.forEach((slider) => {
     const slides = Array.from(slider.querySelectorAll("li"));
     if (!slides.length) return;
 
-    const prevBtn = slider.querySelector(".slider-mini-prev");
-    const nextBtn = slider.querySelector(".slider-mini-next");
+    const prevBtn = slider.querySelector(".slider-compacto-anterior");
+    const nextBtn = slider.querySelector(".slider-compacto-siguiente");
 
     let currentIndex = slides.findIndex(s => s.classList.contains("active"));
     if (currentIndex < 0) currentIndex = 0;
@@ -507,6 +525,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function startAutoplay() {
       stopAutoplay();
+      if (reduceMotion) return;
       autoplayId = setInterval(nextSlide, AUTOPLAY_MS);
     }
 
@@ -537,15 +556,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
 /* FIN SLIDERS */
 
-/* NAVBAR — Cierre de menú al hacer clic en un enlace de navegación */
+/* Cierra el menú móvil al elegir un destino o pulsar Escape. */
 document.addEventListener('DOMContentLoaded', function() {
-    const menuIcon = document.querySelector('.menu-icon');
-    const navMenu  = document.querySelector('.navbar-nav');
+    document.querySelectorAll('.navbar-toggle').forEach(toggle => {
+        const navbar = toggle.closest('.navbar');
+        if (!navbar) return;
 
-    document.querySelectorAll('.navbar-nav a').forEach(link => {
-        link.addEventListener('click', () => {
-            menuIcon?.classList.remove('active');
-            navMenu?.classList.remove('active');
+        navbar.querySelectorAll('.navbar-link').forEach(link => {
+            link.addEventListener('click', () => {
+                toggle.checked = false;
+            });
+        });
+
+        navbar.addEventListener('keydown', event => {
+            if (event.key === 'Escape' && toggle.checked) {
+                toggle.checked = false;
+                toggle.focus();
+            }
         });
     });
 });
