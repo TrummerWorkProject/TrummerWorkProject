@@ -1,6 +1,6 @@
 /* ─────────────────────────────────────────────────────────────
    TRUMMERWORK [https://trummerwork-project.web.app/]
-   Versión 2.0.0
+   Versión 2.0.1
    ───────────────────────────────────────────────────────────── */
 
 /* ─────────────────────────────────────────────────────────────
@@ -1404,7 +1404,7 @@ a.link:focus-visible::after {
   display: block;
   width: min(1160px, calc(100% - 48px));
   max-width: 1160px;
-  margin: clamp(56px, 8vw, 96px) auto;
+  margin: clamp(24px, 4vw, 48px) auto 0;
 } 
 .contenedor-pequeño{width: 25%;}
 .contenedor-mediano{width: 50%;}
@@ -1883,7 +1883,7 @@ a.link:focus-visible::after {
   .contenedor {
     width: 100%;
     padding: var(--espaciado-celular);
-    margin: 0 auto;
+    margin: clamp(20px, 4vw, 32px) auto 0;
   }
   .contenedor-mediano {
     width: 75%;
